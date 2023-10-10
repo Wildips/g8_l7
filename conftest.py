@@ -44,10 +44,10 @@ def get_test_data():
             FILES_CONTENT_PART['xls']['sheet_rows'] = sheet.nrows
             FILES_CONTENT_PART['xls']['sheet_columns'] = sheet.ncols
             FILES_CONTENT_PART['xls']['sheet_crossing'] = sheet.cell_value(9, 2)
-        elif file_extension == "xslx":
+        elif file_extension == "xlsx":
             workbook = load_workbook(os.path.abspath(rf'resources/{row}'))
-            sheet = workbook.active()
-            FILES_CONTENT_PART['xslx']['sheet_crossing'] = sheet.cell(row=3, column=2).value
+            sheet = workbook.active
+            FILES_CONTENT_PART['xlsx']['sheet_crossing'] = sheet.cell(row=3, column=2).value
         elif file_extension == "pdf":
             reader = PdfReader(os.path.abspath(rf'resources/{row}'))
             FILES_CONTENT_PART['pdf']['amount_of_sheets'] = len(reader.pages)

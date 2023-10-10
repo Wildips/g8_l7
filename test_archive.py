@@ -22,9 +22,8 @@ def test_pdf_file(start_stop):
         for row in zip_file.namelist():
 
             file_extension = row[row.find('.') + len('.'):]
-
             if file_extension == "pdf":
-                reader = PdfReader(archive_path)
+                reader = PdfReader(row)
                 assert test_data['pdf']['amount_of_sheets'] == len(reader.pages), "Количество страниц не эквивалентно"
                 page = reader.pages[1]
                 assert test_data['pdf']['page_text'] == page.extract_text(), "Текст на странице не эквивалентен"
@@ -38,9 +37,9 @@ def test_xlsx_file(start_stop):
             file_extension = row[row.find('.') + len('.'):]
 
             if file_extension == "xlsx":
-                workbook = load_workbook(archive_path)
-                sheet = workbook.active()
-                assert test_data['xslx']['sheet_crossing'] == sheet.cell(row=3, column=2).value, \
+                workbook = load_workbook(zip_file.open(row, 'r'))
+                sheet = workbook.active
+                assert test_data['xlsx']['sheet_crossing'] == sheet.cell(row=3, column=2).value, \
                     "Значение ячеек не эквивалентно"
 
 
@@ -52,7 +51,7 @@ def test_xls_file(start_stop):
             file_extension = row[row.find('.') + len('.'):]
 
             if file_extension == "xls":
-                workbook = open_workbook(archive_path)
+                workbook = open_workbook(row)
                 assert test_data['xls']['amount_of_sheets'] == workbook.nsheets, "Количество страниц не эквивалентно"
                 assert test_data['xls']['sheets_names_list'] == workbook.sheet_names(), "Имена страниц не эквивалентны"
                 # only for current example
