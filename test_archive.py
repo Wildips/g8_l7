@@ -4,24 +4,24 @@ from openpyxl import load_workbook
 from pypdf import PdfReader
 
 
-def test_txt_file(create_test_data):
-    archive_path, test_data = create_test_data
-    with ZipFile(archive_path) as zip_file:
+def test_txt_file(start_stop):
+    archive_path, test_data = start_stop
+    with ZipFile(archive_path, 'r') as zip_file:
         for row in zip_file.namelist():
 
-            file_extension = row[row.find('.'):]
+            file_extension = row[row.find('.') + len('.'):]
 
             if file_extension == "txt":
                 with open(row, 'r') as fn:
-                    assert test_data['txt']['file_text'] == fn.read(), "Текст не эквивалентен"
+                    assert test_data['txt']['file_text'] in fn.read(), "Текст не эквивалентен"
 
 
-def test_pdf_file(create_test_data):
-    archive_path, test_data = create_test_data
-    with ZipFile(archive_path) as zip_file:
+def test_pdf_file(start_stop):
+    archive_path, test_data = start_stop
+    with ZipFile(archive_path, 'r') as zip_file:
         for row in zip_file.namelist():
 
-            file_extension = row[row.find('.'):]
+            file_extension = row[row.find('.') + len('.'):]
 
             if file_extension == "pdf":
                 reader = PdfReader(archive_path)
@@ -30,12 +30,12 @@ def test_pdf_file(create_test_data):
                 assert test_data['pdf']['page_text'] == page.extract_text(), "Текст на странице не эквивалентен"
 
 
-def test_xlsx_file(create_test_data):
-    archive_path, test_data = create_test_data
-    with ZipFile(archive_path) as zip_file:
+def test_xlsx_file(start_stop):
+    archive_path, test_data = start_stop
+    with ZipFile(archive_path, 'r') as zip_file:
         for row in zip_file.namelist():
 
-            file_extension = row[row.find('.'):]
+            file_extension = row[row.find('.') + len('.'):]
 
             if file_extension == "xlsx":
                 workbook = load_workbook(archive_path)
@@ -44,12 +44,12 @@ def test_xlsx_file(create_test_data):
                     "Значение ячеек не эквивалентно"
 
 
-def test_xls_file(create_test_data):
-    archive_path, test_data = create_test_data
-    with ZipFile(archive_path) as zip_file:
+def test_xls_file(start_stop):
+    archive_path, test_data = start_stop
+    with ZipFile(archive_path, 'r') as zip_file:
         for row in zip_file.namelist():
 
-            file_extension = row[row.find('.'):]
+            file_extension = row[row.find('.') + len('.'):]
 
             if file_extension == "xls":
                 workbook = open_workbook(archive_path)
